@@ -1,0 +1,5 @@
+a.exe
+CMakeLists.txt
+do_not_delet.c
+.idea/
+cmake-build-debug/
