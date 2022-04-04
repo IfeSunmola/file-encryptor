@@ -1,35 +1,57 @@
 #include <stdio.h>
-# include <stdlib.h>
+#include <stdbool.h>
 
-
-int main() {
-    char file_name[55] = "C:\\Users\\sunmo\\Documents\\cLion\\encryptor\\file.txt";
-    FILE* file_to_read = fopen(file_name, "r"); // r for reading
-    FILE* file_to_write = fopen("encrypted.txt", "w");
-    if (file_to_read == NULL) {
-        printf("Error!! File could not be opened!");
-        return -1;
-    }
+bool encrypt(char to_encrypt[]) {
+    FILE* to_read = fopen(to_encrypt, "r");
+    FILE* to_write = fopen("encrypted.txt", "w");
+    bool done = false;
     char letter = ' ';
-
-    while ((letter = fgetc(file_to_read)) != EOF) {
-        char int_letter = letter + 69;
-        printf("%c", int_letter);
-        putc(int_letter, file_to_write);
-    }
-
-    fclose(file_to_read);
-    fclose(file_to_write);
-
-    char file_name2[100] = "C:\\Users\\sunmo\\Documents\\cLion\\encryptor\\encrypted.txt";
-    FILE* to_read = fopen(file_name2, "r"); // r for reading
-    letter = ' ';
-    while ((letter = fgetc(to_read)) != EOF) {
-        char int_letter = letter - 69;
-        printf("%c", int_letter);
-
+    if (to_read != NULL) {
+        while ((letter = fgetc(to_read)) != EOF) {
+            char temp = letter + 69; // hehe
+            putc(temp, to_write);
+        }
+        done = true;// a bit redundant but that's okay
     }
     fclose(to_read);
+    fclose(to_write);
+    return done;//returns false if the file could not be opened
+}
+
+bool decrypt(char to_decrypt[]) {
+    FILE* to_read = fopen(to_decrypt, "r");
+    FILE* to_write = fopen("decrypted.txt", "w");
+    bool done = false;
+    char letter = ' ';
+    if (to_read != NULL) {
+        while ((letter = fgetc(to_read)) != EOF) {
+            char temp = letter - 69; // hehe
+            putc(temp, to_write);
+        }
+        done = true;// a bit redundant but that's okay
+    }
+    fclose(to_read);
+    fclose(to_write);
+
+    return done;//returns false if the file could not be opened
+}
+
+int main() {
+    char file_name[50] = "C:\\Users\\sunmo\\Documents\\cLion\\encryptor\\file.txt";
+
+    if (encrypt(file_name)) {
+        printf("Your file was ENCRYPTED successfully.\n");
+    }
+    else {
+        printf("Error! Your file could not be read. Check the path.");
+    }
+
+    if (decrypt("encrypted.txt")) {
+        printf("Your file was DECRYPTED successfully.\n");
+    }
+    else {
+        printf("Error! Your file could not be read. Check the path.");
+    }
     return 0;
 }
 
