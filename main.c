@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void display_message(bool done, char type[]) {
+    if (done) {
+        printf("The file was %s successfully", type);
+    }
+    else {
+        printf("The file could not be read");
+    }
+}
+
 bool encrypt(char to_encrypt[]) {
     FILE* to_read = fopen(to_encrypt, "r");
     FILE* to_write = fopen("encrypted_file.txt", "w");
@@ -36,21 +45,39 @@ bool decrypt(char to_decrypt[]) {
     return done;//returns false if the file could not be opened
 }
 
+void show_start_menu() {
+    printf("Welcome to the encrypting/decrypting program.\n");
+    printf("Menu:\n");
+    printf("1. Encrypt my file\n2. Decrypt my file\n");
+    printf("What would you like to do (1 or 2): ");
+}
+
+
 int main() {
-    char file_name[50] = "C:\\Users\\sunmo\\Documents\\cLion\\encryptor\\file.txt";
-
-    if (encrypt(file_name)) {
-        printf("Your file was ENCRYPTED successfully.\n");
+    show_start_menu();
+    int user_input = ' ';
+    scanf("%d", &user_input);
+    char user_file_path[100];
+    printf("Enter the file path: ");
+    scanf("%s", user_file_path);
+    bool status = false;
+    if (user_input == 1) {// encrypt
+        status = encrypt(user_file_path);
+        if (status) {
+            printf("The file was ENCRYPTED successfully; and is stored as encrypted_file.txt");
+        }
+        else {
+            printf("The file could not be read");
+        }
     }
-    else {
-        printf("Error! Your file could not be read. Check the path.");
-    }
-
-    if (decrypt("encrypted.txt")) {
-        printf("Your file was DECRYPTED successfully.\n");
-    }
-    else {
-        printf("Error! Your file could not be read. Check the path.");
+    else if (user_input == 2) {
+        status = decrypt(user_file_path);
+        if (status) {
+            printf("The file was DECRYPTED successfully; and is stored as decrypted_file.txt");
+        }
+        else {
+            printf("The file could not be read");
+        }
     }
     return 0;
 }
