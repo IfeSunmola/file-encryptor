@@ -3,7 +3,7 @@
 
 bool encrypt(char to_encrypt[]) {
     FILE* to_read = fopen(to_encrypt, "r");
-    FILE* to_write = fopen("encrypted.txt", "w");
+    FILE* to_write = fopen("encrypted_file.txt", "w");
     bool done = false;
     char letter = ' ';
     if (to_read != NULL) {
@@ -20,7 +20,7 @@ bool encrypt(char to_encrypt[]) {
 
 bool decrypt(char to_decrypt[]) {
     FILE* to_read = fopen(to_decrypt, "r");
-    FILE* to_write = fopen("decrypted.txt", "w");
+    FILE* to_write = fopen("decrypted_file.txt", "w");
     bool done = false;
     char letter = ' ';
     if (to_read != NULL) {
