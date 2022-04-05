@@ -1,5 +1,6 @@
 a.exe
 CMakeLists.txt
-do_not_delet.c
+do_not_delete.c
 .idea/
 cmake-build-debug/
+decrypted_0.txt
