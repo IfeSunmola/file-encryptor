@@ -1,18 +1,13 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
-void display_message(bool done, char type[]) {
-    if (done) {
-        printf("The file was %s successfully", type);
-    }
-    else {
-        printf("The file could not be read");
-    }
-}
+const char DECRYPT_MARKER[] = "~~~~~~~~~\n";
 
 bool encrypt(char to_encrypt[]) {
     FILE* to_read = fopen(to_encrypt, "r");
     FILE* to_write = fopen("encrypted_file.txt", "w");
+    fprintf(to_write, DECRYPT_MARKER);
     bool done = false;
     char letter = ' ';
     if (to_read != NULL) {
@@ -27,22 +22,33 @@ bool encrypt(char to_encrypt[]) {
     return done;//returns false if the file could not be opened
 }
 
+bool decrypt_pre_check(FILE* to_read) {
+    char line[255]; // holds one line, one line at a time
+    fgets(line, 255, to_read);
+    if (strcmp(line, DECRYPT_MARKER) == 0) {
+        return true;
+    }
+    return false;
+}
+
 bool decrypt(char to_decrypt[]) {
-    FILE* to_read = fopen(to_decrypt, "r");
-    FILE* to_write = fopen("decrypted_file.txt", "w");
-    bool done = false;
+    bool status = false;
     char letter = ' ';
+    FILE* to_read = fopen(to_decrypt, "r");
     if (to_read != NULL) {
-        while ((letter = fgetc(to_read)) != EOF) {
-            char temp = letter - 69; // hehe
-            putc(temp, to_write);
+        if (decrypt_pre_check(to_read)) {
+            FILE* to_write = fopen("decrypted_file.txt", "w");
+            while ((letter = fgetc(to_read)) != EOF) {
+                char temp = letter - 69; // hehe
+                putc(temp, to_write);
+            }
+            status = true;// a bit redundant but that's okay
+            fclose(to_write);
         }
-        done = true;// a bit redundant but that's okay
     }
     fclose(to_read);
-    fclose(to_write);
-
-    return done;//returns false if the file could not be opened
+    //returns false if the file could not be opened, or if the file has not been encrypted before
+    return status;
 }
 
 void show_start_menu() {
@@ -54,12 +60,14 @@ void show_start_menu() {
 
 
 int main() {
-    show_start_menu();
     int user_input = ' ';
+    show_start_menu();
     scanf("%d", &user_input);
-    char user_file_path[100];
+
     printf("Enter the file path: ");
+    char user_file_path[100];
     scanf("%s", user_file_path);
+
     bool status = false;
     if (user_input == 1) {// encrypt
         status = encrypt(user_file_path);
@@ -76,7 +84,7 @@ int main() {
             printf("The file was DECRYPTED successfully; and is stored as decrypted_file.txt");
         }
         else {
-            printf("The file could not be read");
+            printf("An error occurred. Is the file path correct? Has the file been encrypted with us before?");
         }
     }
     return 0;
