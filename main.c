@@ -76,7 +76,7 @@ bool decrypt(char to_decrypt[]) {
     FILE* to_read = fopen(to_decrypt, "r");// open for reading
     if (to_read != NULL) {// file was opened successfully
         if (decrypt_pre_check(to_read)) {// if true, the file has been encrypted before, proceed to decrypt
-            FILE* to_write = fopen("decrypted_file.txt", "w");
+            FILE* to_write = fopen("decrypted.txt", "w");
             while ((letter = (char) fgetc(to_read)) != EOF) {
                 putc(letter - OFFSET, to_write);
             }
@@ -97,17 +97,25 @@ bool decrypt(char to_decrypt[]) {
 int show_menu_and_get_input() {
     int user_input;
     printf("%s______________________________________________\n", INDENTATION);
+    fflush(stdout);
     printf("%s|                                             |\n", INDENTATION);
+    fflush(stdout);
     printf("%s|Welcome to the encrypting/decrypting program.|\n", INDENTATION);
+    fflush(stdout);
     printf("%s|Menu:                                        |\n", INDENTATION);
+    fflush(stdout);
     printf("%s|1. Encrypt a file                            |\n", INDENTATION);
+    fflush(stdout);
     printf("%s|2. Decrypt an encrypted file                 |\n", INDENTATION);
+    fflush(stdout);
     printf("%s|3. Quit                                      |\n", INDENTATION);
+    fflush(stdout);
     printf("%s|What would you like to do (1 or 2)? ", INDENTATION);
-
+    fflush(stdout);
     scanf("%d", &user_input);
     getchar();
     printf("%s", LINE_BREAKER);
+    fflush(stdout);
     return user_input;
 }
 
@@ -117,32 +125,41 @@ int main() {
     while (!(user_input > 0 && user_input <= 3)) {// keep asking till the user enters something valid
         system("cls"); //clear screen each time
         printf("%sInvalid choice, try again\n", INDENTATION);
+        fflush(stdout);
         user_input = show_menu_and_get_input();
     }
     if (user_input == 3) { // quit
         printf("%s|Thanks for stopping by                       |\n", INDENTATION);
+        fflush(stdout);
         printf("%s", LINE_BREAKER);
+        fflush(stdout);
     }
         //TODO: SEPARATE THE ELSE TO DIFFERENT FUNCTIONS
     else {
         char user_file_path[100];
         printf("%s|Enter the file path:\n", INDENTATION);// get the file to encrypt/decrypt
+        fflush(stdout);
 
         printf("%s|", INDENTATION);
+        fflush(stdout);
         scanf("%s", user_file_path);
         getchar();
 
         printf("%s", LINE_BREAKER);
+        fflush(stdout);
 
         bool success;// used to print error messages
         if (user_input == 1) {// encrypting
             success = encrypt(user_file_path);
             if (success) {// file was encrypted
                 printf("%s|The file was ENCRYPTED successfully and saved|\n", INDENTATION);
+                fflush(stdout);
                 printf("%s|as encrypted.txt                             |\n", INDENTATION);
+                fflush(stdout);
             }
             else {// not encrypted
                 printf("%s|The file could not be read                   |\n", INDENTATION);
+                fflush(stdout);
             }
             printf("%s", LINE_BREAKER);
         }
@@ -150,13 +167,18 @@ int main() {
             success = decrypt(user_file_path);
             if (success) {// was decrypted
                 printf("%s|The file was DECRYPTED successfully and saved|\n", INDENTATION);
+                fflush(stdout);
                 printf("%s|as decrypted.txt                             |\n", INDENTATION);
+                fflush(stdout);
             }
             else {// problem happened
                 printf("%s|An error occurred. Is the file path correct? |\n", INDENTATION);
+                fflush(stdout);
                 printf("%s|Has the file been encrypted with us before?  |\n", INDENTATION);
+                fflush(stdout);
             }
             printf("%s", LINE_BREAKER);
+            fflush(stdout);
         }
     }
     return 0;
