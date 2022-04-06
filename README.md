@@ -5,7 +5,8 @@ INFORMATION. NO SOPHISTICATED FORM OF ENCRYPTION WAS USED HERE. </h4>
   
 **_Side note_**: Below all the print statements, I had to flush the buffer with `fflush(stdout)` so the program would work correctly with unix environments, specifically git bash. If anyone knows how to avoid using those, feel free to make a pull request, thank you.  
 <hr>
-Running `main.c` with:
+
+Run `main.c` with:
 
 **Unix based systems:** `clear && g++ main.c && ./a.exe`  
 **Windows:** `cls && g++ main.c && a.exe`  
